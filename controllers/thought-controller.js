@@ -60,7 +60,7 @@ const thoughtController = {
             .select('-___v')
             .then(dbThoughtsData => {
                 if (!dbThoughtsData) {
-                    res.status(404).json({ message: 'No thoughts with this particular ID!' });
+                    res.status(404).json({ message: 'No thoughts found with this ID. Try again!' });
                     return;
                 }
                 res.json(dbThoughtsData);
