@@ -1,24 +1,17 @@
 const { Schema, model } = require('mongoose');
 
-const UserSchema = new Schema(
-    {
+const UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
         required: true,
         trim: true
-     },
+    },
     email: {
         type: String,
         unique: true,
-        validate: {
-            validator: function(v) {
-              return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            },
-            message: props => `${props.value} is not a valid email address`
-          },
+        match :/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         required: [true, 'Email address is required']
-    
     },
     thoughts: [
         {
