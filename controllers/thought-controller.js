@@ -1,6 +1,36 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+    //get all thoughts
+    getAllThoughts(req, res) {
+        Thought.find({})
+            .populate({ path: 'reactions', select: '-__v' })
+            .sort({ _id: -1 })
+            .select('-__v')
+            .then(dbThoughtsData => res.json(dbThoughtsData))
+            .catch(err => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    },
+    // get a single thought by id
+    getThoughtById({ params }, res) {
+        Thought.findOne({ _id: params.thoughtId })
+            .populate({ path: 'reactions', select: '-__v' })
+            .select('-__v')
+            .then(dbThoughtsData => {
+                if (!dbThoughtsData) {
+                    res.status(404).json({ message: 'No thoughts found with this ID. Try again!' });
+                    return;
+                }
+                res.json(dbThoughtsData)
+            })
+            .catch(err => {
+                console.log(err);
+                res.sendStatus(400);
+            });
+    },
+
     // add thought to a user
     addThought({ params, body }, res) {
         console.log(params);
@@ -19,6 +49,21 @@ const thoughtController = {
                     return;
                 }
                 res.json(dbUserData);
+            })
+            .catch(err => res.json(err));
+    },
+
+    // Update a thought by ID
+    updateThought({ params, body }, res) {
+        Thought.findOneAndUpdate({ _id: params.thoughtId }, body, { new: true, runValidators: true })
+            .populate({ path: 'reactions', select: '-__v' })
+            .select('-___v')
+            .then(dbThoughtsData => {
+                if (!dbThoughtsData) {
+                    res.status(404).json({ message: 'No thoughts with this particular ID!' });
+                    return;
+                }
+                res.json(dbThoughtsData);
             })
             .catch(err => res.json(err));
     },
