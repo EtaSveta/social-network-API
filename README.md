@@ -39,9 +39,9 @@ https://user-images.githubusercontent.com/109307665/204163922-85cf23b8-3d1f-4690
   Run `npm install mongoose express nodemon'
   
   ## Usage
-  Run `npm start` to invoke the application. 
-
+  Run `npm start` to invoke the application.  
   
+  When the command to invoke the application is entered, the Mongoose models are synced to the MongoDB database  
 
     
   ## Tests
